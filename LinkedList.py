@@ -14,6 +14,7 @@ class Node:
         return str(f"Node({self.item})")
 
 class LinkedList:
+    
     _head: Node
     _tail: Node
     _len: int
@@ -72,24 +73,34 @@ class LinkedList:
         self._len+=1
             
 
-
     def remove_last(self):
         """removes the last node if present"""
-        if len(self)==0:
+
+        if self._head is None:
             raise RuntimeError("Cannot remove from empty list")
-        else:
-            prev, curr=None, self._head
-            while curr != self._tail:
-                prev = curr
-                curr = curr.link         
-            prev.link = None
-            self._tail = prev
+        
+        #If the length of the linkedlist is 1 the head and tail are equal.
+        if self._head == self._tail:
+            #The head is the tail, so return whatever item is the only one in the linked list
+            previous_tail = self._tail.item
+            #Since we removed the only element the head and tail now point to Null values. 
+            self._head = None
+            self._tail = None
 
-            if not prev:
-                self._head = None
-            self._len -=1
-            return curr.item
+        else:  
+            current = self._head
+            #While loop starts at beginning and loops until we reach the end of the linked list
+            while current.link != self._tail:
+                #update current value with the next value in succession by assinging it to it's next link
+                current = current.link
+            
+            previous_tail = self._tail.item
+            self._tail = current
+            self._tail.link = None
 
+        self._len -= 1
+        return previous_tail
+    
     def remove_first(self):
         """
         Removes the first element of a linked list and updates the new head.
@@ -104,3 +115,4 @@ class LinkedList:
             self._len -= 1
         
         return prevHead.item
+
