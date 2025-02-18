@@ -24,7 +24,7 @@ class LinkedList:
         self._head = None
         self._tail = None
         self._len = 0
-
+    
         if items != None:
             for item in items:
                 self.add_last(item)
@@ -71,7 +71,39 @@ class LinkedList:
             self._head = newNode
         #Update the length of the new Node. 
         self._len+=1
+    
+    def add_after_node(self, item = None, nextElement = None):
+        """Insert node after specified node"""
+        newNode = Node(nextElement)
+        
+        if len(self) == 0:
+            self._head = self._tail = newNode
+        else:
+            curr = self._head
+            while curr.item != item:
+                curr = curr.link
             
+            newNode.link = curr.link
+            curr.link = newNode
+        
+        self._len += 1
+
+    def add_before_node(self, item = None, nextElement = None):
+        """insert node before a specified node"""
+        newNode = Node(nextElement)
+        
+        if len(self) == 0:
+            self._head = self._tail = newNode
+        else:
+            curr = self._head
+            while curr.link.item != item:
+                curr = curr.link
+            
+            newNode.link = curr.link
+            curr.link = newNode
+        
+        self._len += 1
+
 
     def remove_last(self):
         """removes the last node if present"""
