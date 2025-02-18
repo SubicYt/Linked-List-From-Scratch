@@ -29,14 +29,23 @@ class TestLinkedList(unittest.TestCase):
     def test_add_last(self):
 
         linkedList = LinkedList()
+        """
         linkedList.add_last("A")
         linkedList.add_last("B")
         linkedList.add_last("C")
         linkedList.add_last("D")
+        linkedList.add_first("X")
+        """
+        items = ["A","B","C","D"]
+        for item in items:
+            linkedList.add_last(item)
 
         self.assertEqual(linkedList.get_head(), "A")
         self.assertEqual(linkedList.get_tail(), "D")
 
+        linkedList.remove_last()
+
+        self.assertEqual(linkedList.get_tail(),"C")
     def test_remove_last(self):
 
         linkedList = LinkedList()
@@ -92,5 +101,46 @@ class TestLinkedList(unittest.TestCase):
 
         linkedList2.remove_first()
         self.assertEqual(linkedList2.get_head(), None)
+
+    def test_add_after_node(self):
+        linkedList = LinkedList()
+        linkedList.add_last("A")
+        linkedList.add_last("B")
+        linkedList.add_last("C")
+        linkedList.add_last("D")
+
+        self.assertEqual(linkedList.get_head(), "A")
+        self.assertEqual(linkedList.get_tail(), "D")
+
+        linkedList.add_after_node("A", "H")
+        linkedList.remove_first()
+        self.assertEqual(linkedList.get_head(), "H")
+
+        linkedList.add_after_node("C", "T")
+        linkedList.remove_last()
+        self.assertEqual(linkedList.get_tail(), "T")
+
+    def test_add_before_node(self):
+        linkedList = LinkedList()
+        linkedList.add_last("A")
+        linkedList.add_last("B")
+        linkedList.add_last("C")
+        linkedList.add_last("D")
+
+        self.assertEqual(linkedList.get_head(), "A")
+        self.assertEqual(linkedList.get_tail(), "D")
+
+        linkedList.add_before_node("B", "H")
+        linkedList.remove_first()
+        self.assertEqual(linkedList.get_head(), "H")
+        """
+        linkedList2 = LinkedList()
+        linkedList.add_last("A")
+        linkedList.add_before_node("A", "B")
+        self.assertEqual(linkedList2.get_head(),"B")
+        """
+        
+
 if __name__ == "__main__":
     unittest.main()
+
