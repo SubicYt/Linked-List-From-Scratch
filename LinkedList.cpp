@@ -3,6 +3,7 @@
 /*
 Dynamic memory allocation practice with linkedlist from scratch
 We get to determine the length of the list in real time! 
+Try to implement try catch statements. 
 Singly Linked List
 */
 template <typename temp>
@@ -45,6 +46,15 @@ public:
 
 	int getLength() {
 		return len;
+	}
+
+	bool isEmpty() {
+		if (!len) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 	
 	temp getHead() {
@@ -97,22 +107,23 @@ public:
 	}
 	
 	void remove_last() {
-		if (len == 0 && !head) {
-			std::cout << "Invalid operation";
+		if (len == 0) {
+			throw std::runtime_error("Out Of range - empty List");
 		}
 		if (len == 1) {
 			delete head;
-			head = tail = nullptr; 
+			head = tail = nullptr;
 		}
 		else {
 			Node<temp>* currentNode = head;
 			while (currentNode->link != tail) {
-				currentNode = currentNode->link; //Loop until pointer points to the tail Node
+				currentNode = currentNode->link;
 			}
+			//break out of loop when currentNode is the second last node.
 			tail = currentNode;
-			currentNode->link = nullptr;
+			delete currentNode->link; //deletes the last node. 
+			currentNode->link = nullptr; //last node link points to null. 
 		}
-		len = len - 1;
 	}
 
 	void remove_first() {
@@ -125,6 +136,7 @@ public:
 			}
 			else {
 				Node<temp>* NewHead = head->link;
+				delete head;
 				head = NewHead;
 			}
 			len = len - 1;
@@ -132,8 +144,32 @@ public:
 };
 	
 int main() {
-	LinkedList<int> LinkedList1;
-	LinkedList1.push_back(6);
-	LinkedList1.remove_first();
-	std::cout << LinkedList1.getLength();
+	LinkedList <int> TestEmpty; //LinkedList Object to test remove from empty list.
+
+	try {
+		TestEmpty.remove_last();
+	}
+	catch(const std::runtime_error& e) {
+		std::cerr << "Error: " << e.what() << std::endl;
+	}
+
+	LinkedList<int> TestRemoveOne; //LinkedList Object to test removing one element (check empty).
+
+	TestRemoveOne.push_back(10);
+	TestRemoveOne.remove_first();
+	TestRemoveOne.push_back(20);
+	TestRemoveOne.remove_last();
+	std::cout << TestRemoveOne.isEmpty() << "---- If empty, value should be 1" << std::endl;
+
+	LinkedList<int> TestLargeList; //Test push front and back. Also Remove from larger list. 
+
+	TestLargeList.push_back(10);
+	TestLargeList.push_back(20);
+	TestLargeList.push_front(0);
+	TestLargeList.push_back(30);
+	TestLargeList.remove_first(); //removes 0
+	TestLargeList.remove_last(); //removes 30
+
+	std::cout << TestLargeList.getHead() << " -- Head should be 10" << std::endl; //Head should now be 10
+	std::cout << TestLargeList.getTail() << " -- Tail should be 20" << std::endl; //Tail hould be 20
 }
